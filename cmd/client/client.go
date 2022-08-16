@@ -5,7 +5,6 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"log"
-	"time"
 )
 
 func main() {
@@ -23,18 +22,9 @@ func main() {
 
 	c := greeting.NewGreeterClient(conn)
 
-	i := 0
-	for {
-		if i > 10 {
-			return
-		}
-		now := time.Now()
-		response, err := c.SayHello(context.Background(), &greeting.HelloRequest{Name: "Hello From Client!"})
-		if err != nil {
-			log.Fatalf("Error when calling SayHello: %s", err)
-		}
-		log.Printf("%v\n", time.Since(now))
-		log.Printf("Response from server: %s", response.Message)
-		i++
+	response, err := c.SayHello(context.Background(), &greeting.HelloRequest{Name: "Hello From Client!"})
+	if err != nil {
+		log.Fatalf("Error when calling SayHello: %s", err)
 	}
+	log.Printf("Response from server: %s", response.Message)
 }
